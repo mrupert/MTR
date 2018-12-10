@@ -1,0 +1,38 @@
+#!/bin/sh
+
+
+HISTIGNORE="&:svn revert*:ls:pwd:svn up:svn stat:history:hist:latr:x:exit:quit:cd:dt:cd2:cd3:cd4:cd5:cd6:cd7:cd8:cd9:cd10:cd11:cd12:cd13:cd14:clear:c:logout"
+
+alias hist='history 50'
+
+export HISTCONTROL=ignoredups:erasedups  # no duplicate entries
+export HISTSIZE=100000                   # big big history
+export HISTFILESIZE=100000               # big big history
+shopt -s histappend                      # append to history, don't overwrite it
+shopt -s histreedit                      ## reedit a history substitution line if it failed
+shopt -s histverify                     ## edit a recalled history line before executing
+# Save and reload the history after each command finishes
+export PROMPT_COMMAND="history -a; history -c; history -r; $PROMPT_COMMAND"
+export HISTFILE=/Users/matthew.rupert/.history
+shopt -s histappend # When the shell exits, append to the history file instead of overwriting it
+export EXTENDED_HISTORY_ON
+export EXTENDED_HISTORY # Add additional data to history like timestamp
+export INC_APPEND_HISTORY # Add immediately
+export HIST_FIND_NO_DUPS # Don't show duplicates in search
+#setopt HIST_IGNORE_SPACE # Don't preserve spaces. You may want to turn it off
+export NO_HIST_BEEP # Don't beep
+export SHARE_HISTORY # Share history between session/terminals
+_bash_history_sync() {
+  builtin history -a         #1
+  HISTFILESIZE=$HISTSIZE     #2
+  builtin history -c         #3
+  builtin history -r         #4
+}
+
+history() {                  #5
+  _bash_history_sync
+  builtin history "$@"
+}
+
+PROMPT_COMMAND=_bash_history_sync
+

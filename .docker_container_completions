@@ -1,0 +1,12 @@
+#!/bin/sh
+
+_docker_completion_opts=`docker ps -q`
+_docker_completion_opts+=`docker ps --format '{{.Names}}'`
+	
+complete -W "${_docker_completion_opts}" 'docker'
+complete -W "${_docker_completion_opts}" 'drm'
+complete -W "${_docker_completion_opts}" 'dstop'
+complete -W "${_docker_completion_opts}" 'dlog'
+complete -W "${_docker_completion_opts}" 'drmi'
+complete -W "${_docker_completion_opts}" 'drmii'
+

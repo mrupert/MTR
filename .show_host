@@ -1,0 +1,26 @@
+#!/bin/sh
+
+# SHOW THE NAME OF THE HOST I'M IN
+
+DATE=`date`
+# Save cursor pos
+tput sc
+# Change scroll region to exclude first line
+tput csr 1 $((`tput lines` - 1))
+# Move to upper-left corner
+tput cup 0 0
+# Clear to the end of the line
+tput el
+# Create a header row
+tput setaf 2; tput rev;tput smso;tput bold;printf "%*s" $(tput cols) "$HOSTNAME "
+
+
+# Restore cursor position
+tput rc
+
+
+# CLEAR THE HEADER WHEN I LOG OUT
+trap ~/.logout EXIT
+alias clearheader="tput sc;tput cup 0 0;tput el;tput rc"
+
+

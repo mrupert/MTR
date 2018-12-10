@@ -1,0 +1,25 @@
+#!/bin/bash
+
+# Restart container
+docker_compose_restart() {
+  if [ -f 'docker-compose.yml' ]; then
+    docker-compose stop $1; docker-compose rm -f $1; docker-compose up -d $1
+  else
+    echo "You probably want to run the restart command from where docker-compse.yml lives..."
+  fi
+}
+
+#alias de='docker exec -it $(docker ps -l -q) bash -c "cd /opt/spring/log; exec ${SHELL:-sh}"'
+# Connect to a shell
+docker_exec() {
+				$(docker exec -i -t $1 /bin/bash -l)
+}
+
+# tail log
+dockertailSpringBoot_log() {
+  docker exec -i -t $1 tail -f ---disable-inotify /opt/spring/log/$1.log
+}
+# tail log
+dockertailSpringBoot_ObcServices_log() {
+  docker exec -i -t $1 tail -f ---disable-inotify /opt/spring/log/obcservices.log
+}
